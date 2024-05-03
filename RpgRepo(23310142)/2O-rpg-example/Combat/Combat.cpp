@@ -60,12 +60,13 @@ void Combat::doCombat() {
 
     //Revisa cuando ya no haya enemigos para poder declarar quien gano
     if(enemies.size() == 0) {
-        cout<<"Haz ganado en los putazos\nHas subido de nivel!"<<endl;
+        cout<<"==== Haz ganado en los putazos - Ganaste ===="<<endl;
         
     }
     else {
-        cout<<"Los enemigos te papearon - Game Over"<<endl;
+        cout << "=== Los enemigos te papearon - Game Over ===" << endl;
     }
+
 }
 
 void Combat::registerActions() {
@@ -98,6 +99,10 @@ void Combat::executeActions() {
 }
 
 void Combat::checkParticipantStatus(Character* participant) {
+    if (participant == NULL) {
+        return;
+    }
+
     if(participant->getHealth() <= 0) {
         if(participant->getIsPlayer()) {
             teamMembers.erase(remove(teamMembers.begin(), teamMembers.end(), participant), teamMembers.end());
@@ -115,6 +120,7 @@ void Combat::checkForFlee(Character *character) {
         if(character->getIsPlayer()) {
             cout<<"Has huido por poco exitosamente"<<endl;
             teamMembers.erase(remove(teamMembers.begin(), teamMembers.end(), character), teamMembers.end());
+     
         }
         else {
             cout<<character->getName()<<"Ha huido"<<endl;

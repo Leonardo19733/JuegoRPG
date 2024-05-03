@@ -23,7 +23,7 @@ void Player::doAttack(Character *target) {
     int rolledAttack = getRolledAttack(getAttack());
     int trueDamage = target->getDefense() > rolledAttack ? 0 : rolledAttack - target->getDefense();
     target->takeDamage(trueDamage);
-    gainExperience(45);
+    gainExperience(30);
 }
 
 void Player::takeDamage(int damage) {
@@ -31,6 +31,7 @@ void Player::takeDamage(int damage) {
     cout << "Haz recibido un plomazo de " << damage << " damage, te quedan "<<health<<" puntos de vida" << endl;
     if (health <= 0) {
         cout << "Has muerto" << endl;
+
     }
 }
 
@@ -63,29 +64,31 @@ void Player::levelUp() {
     level++;
     setHealth(getHealth() + 10);
     cout << "\n---Has subido de nivel---" << endl;
-    cout << " + 10 de Vida: lvl "<<health << endl;
+    cout << "Tu nivel de personaje es: lvl " << level <<" - Exp ("<<experience<<"/100)" << endl;
+    cout << "\n + 10 de Vida: ("<<health <<")"<< endl;
     setAttack(getAttack() + 4);
-    cout << " + 4 de Ataque: lvl "<<attack << endl;
+    cout << " + 4 de Ataque: ("<<attack <<")" << endl;
     setDefense(getDefense() + 1);
-    cout << " + 1 de Defensa: lvl "<<defense << endl;
+    cout << " + 1 de Defensa: ("<<defense <<")"<< endl;
     setSpeed(getSpeed() + 5);
-    cout << " + 5 de Velocidad: lvl "<<speed<<"\n" << endl;
+    cout << " + 5 de Velocidad: ("<<speed<<")\n"<< endl;
 }
 
 void Player::gainExperience(int exp) {
     experience += exp;
     if (experience >= 100) {
+        experience -= 100;
         levelUp();
-        experience = 0;
     }
 }
 
 Character *Player::getTarget(vector<Enemy *> enemies) {
-    cout << "\n=========Elige un objetivo=========" << endl;
+    cout << "\n========= Elige un objetivo =========" << endl;
     int targetIndex = 0;
     for (int i = 0; i < enemies.size(); i++) {
         cout << i << ". " << enemies[i]->getName() << endl;
     }
+    cout << "\n";
     cin >> targetIndex;
     return enemies[targetIndex];
     system("cls");
@@ -114,6 +117,7 @@ Action Player::takeAction(vector<Enemy *> enemies) {
         case 1:
             target = getTarget(enemies);
             myAction.target = target;
+            cout << "\n";
             myAction.action = [this, target]() {
                 doAttack(target);
             };
@@ -127,7 +131,7 @@ Action Player::takeAction(vector<Enemy *> enemies) {
             target = getTarget(enemies);
             myAction.target = target;
             myAction.action = [this, target]() {
-                doAttack(target);
+                doAttack(target); //Este deberia de ser remplazado por baja defensa
                 };
             emote();
             break;

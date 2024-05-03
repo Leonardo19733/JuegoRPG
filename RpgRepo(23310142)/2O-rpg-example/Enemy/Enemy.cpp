@@ -25,7 +25,7 @@ void Enemy::doAttack(Character *target) {
 void Enemy::takeDamage(int damage) {
     setHealth(getHealth() - damage);
     if(getHealth() <= 0) {
-        cout<<getName()<<" ha muerto"<<endl;
+        cout<<"-- " << getName() << " ha muerto --" << endl;
     }
     else {
         cout<<getName()<<" ha recibido un manotazo de " <<damage<< " damage, le queda "<<health<<" de vida" << endl;
