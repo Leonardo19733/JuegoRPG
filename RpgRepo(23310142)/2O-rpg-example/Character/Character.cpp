@@ -2,9 +2,11 @@
 // Created by Victor Navarro on 13/02/24.
 //
 #include "Character.h"
+#include <string>
+#include <sstream>
 
-Character::Character(string _name, int _health, int _attack, int _defense, int _speed, bool _isPlayer) {
-    name = _name;
+Character::Character(char _name[], int _health, int _attack, int _defense, int _speed, bool _isPlayer) {
+    strcpy(name, _name);
     health = _health;
     attack = _attack;
     defense = _defense;
@@ -13,11 +15,11 @@ Character::Character(string _name, int _health, int _attack, int _defense, int _
     fleed = false;
 }
 
-void Character::setName(string _name) {
-    name = _name;
+void Character::setName(char _name[]) {
+    strcpy(name, _name);
 }
 
-string Character::getName() {
+char* Character::getName() {
     return name;
 }
 
@@ -54,7 +56,10 @@ int Character::getSpeed() {
 }
 
 string Character::toString() {
-    return "Name: " + name + "\nHealth: " + to_string(health) + "\nAttack: " + to_string(attack) + "\nDefense: " + to_string(defense) + "\nSpeed: " + to_string(speed);
+    std::string nameStr(name);
+    std::stringstream ss;
+    ss << "Name: " << nameStr << "\nHealth: " << getHealth() << "\nAttack: " << getAttack() << "\nDefense: " << getDefense() << "\nSpeed: " << getSpeed();
+    return ss.str();
 }
 
 bool Character::getIsPlayer() {

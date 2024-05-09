@@ -8,8 +8,8 @@ using namespace std;
 
 int main() {
     Player *player = new Player("Ash mostaza", 55, 14, 2, 6);
-    Enemy *enemy = new Enemy("Puchaina", 35, 12, 2, 7);
-    Enemy *enemy2 = new Enemy("Vaporeon", 42, 9, 2, 2);
+    Enemy *enemy = new Enemy("Puchaina", 43, 12, 2, 7);
+    Enemy *enemy2 = new Enemy("Vaporeon", 27, 9, 2, 2);
 
     vector<Character*> participants;
     participants.push_back(player);

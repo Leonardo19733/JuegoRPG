@@ -3,6 +3,7 @@
 //
 #include "Enemy.h"
 #include <iostream>
+#include <string>
 
 
 using namespace std;
@@ -13,22 +14,25 @@ int getRolledAttack(int attack) {
     return (rand() % (attack - lowerLimit)) + lowerLimit;
 }
 
-Enemy::Enemy(string name, int health, int attack, int defense, int speed) : Character(name, health, attack, defense, speed, false) {
+Enemy::Enemy(char name[], int health, int attack, int defense, int speed) : Character(name, health, attack, defense, speed, false) {
 }
     //Determina un numero aleatorio de daño y defensa del enemigo
 void Enemy::doAttack(Character *target) {
     int rolledAttack = getRolledAttack(getAttack());
     int trueDamage = target->getDefense() > rolledAttack ? 0 : rolledAttack - target->getDefense();
-    target->takeDamage(trueDamage);
+    if (health > 0) {
+        target->takeDamage(trueDamage);
+    }
 }
     //Obtiene la vida del enemigo para saber si aplicar el daño o si ya esta muerto
 void Enemy::takeDamage(int damage) {
     setHealth(getHealth() - damage);
     if(getHealth() <= 0) {
-        cout<<"-- " << getName() << " ha muerto --" << endl;
+        cout << getName() << " ha recibido un manotazo de " << damage << " de damage" << " (Hp " << health << ")" << endl;
+        cout<<"\n-- " << getName() << " ha muerto (+120 Exp) -- " << endl;
     }
     else {
-        cout<<getName()<<" ha recibido un manotazo de " <<damage<< " damage, le queda "<<health<<" de vida" << endl;
+        cout<<getName()<<" ha recibido un manotazo de " << damage << " de damage" << " (Hp "<<health<< ")" << endl;
     }
 }
 

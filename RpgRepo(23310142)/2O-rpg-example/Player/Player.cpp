@@ -13,7 +13,7 @@ bool compareSpeed(Enemy *a, Enemy *b) {
     return a->getSpeed() > b->getSpeed();
 }
 
-Player::Player(string name, int health, int attack, int defense, int speed) : Character(name, health, attack, defense,
+Player::Player(char name[], int health, int attack, int defense, int speed) : Character(name, health, attack, defense,
                                                                                         speed, true) {
     experience = 0;
     level = 1;
@@ -23,15 +23,21 @@ void Player::doAttack(Character *target) {
     int rolledAttack = getRolledAttack(getAttack());
     int trueDamage = target->getDefense() > rolledAttack ? 0 : rolledAttack - target->getDefense();
     target->takeDamage(trueDamage);
-    gainExperience(30);
+                        
+    if (target->getHealth()<=0) {
+        gainExperience(120);
+    }
 }
 
 void Player::takeDamage(int damage) {
     setHealth(health - damage);
-    cout << "Haz recibido un plomazo de " << damage << " damage, te quedan "<<health<<" puntos de vida" << endl;
-    if (health <= 0) {
-        cout << "Has muerto" << endl;
-
+    if ((health > 0) && (fleed == false)) {
+        cout << "Haz recibido un plomazo de " << damage << " damage (Hp " << health << ")" << endl;
+    }else{
+        if (health <= 0) {
+            cout << "=== Los enemigos te papearon - Game Over ===" << endl;
+            return;
+        }
     }
 }
 
@@ -41,15 +47,15 @@ void Player::flee(vector<Enemy *> enemies) {
     bool fleed = false;
     //Si eres mas rapido que los enemigos siempre escapas
     if (this->getSpeed() > fastestEnemy->getSpeed()) {
-        cout << "Eres mas rapido que los enemigos, escapaste sin problemas, velocidad: " << speed << endl;
+        cout << "Eres mas rapido que los enemigos puedes huir sin problemas velocidad: " << speed << endl;
         fleed = true;
     }
     else {
         //Hacemos una probabilidad del 50% en caso de que seas mas lento que el enemigo
         srand(time(NULL));
         int chance = rand() % 100;
-        cout << "Eres mas lento velocidad: "<<speed<<"\nChance de huir: 50%" << endl;
-        fleed = chance > 50;
+        cout << "Eres mas lento, velocidad: "<<speed<<"\nChance de huir: 40%" << endl;
+        fleed = chance < 40;
     }
 
     this->fleed = fleed;
@@ -57,13 +63,13 @@ void Player::flee(vector<Enemy *> enemies) {
 
 //Se burla del enemigo
 void Player::emote() {
-    cout << "*Se burla del enmigo*\n" << endl;
+    cout << "*Se burla del enmigo*\n*El enemigo se enoja*" << endl;
 }
 
 void Player::levelUp() {
     level++;
     setHealth(getHealth() + 10);
-    cout << "\n---Has subido de nivel---" << endl;
+    cout << "\n--- Has subido de nivel ---" << endl;
     cout << "Tu nivel de personaje es: lvl " << level <<" - Exp ("<<experience<<"/100)" << endl;
     cout << "\n + 10 de Vida: ("<<health <<")"<< endl;
     setAttack(getAttack() + 4);
@@ -71,7 +77,7 @@ void Player::levelUp() {
     setDefense(getDefense() + 1);
     cout << " + 1 de Defensa: ("<<defense <<")"<< endl;
     setSpeed(getSpeed() + 5);
-    cout << " + 5 de Velocidad: ("<<speed<<")\n"<< endl;
+    cout << " + 5 de Velocidad: ("<<speed<<")"<< endl;
 }
 
 void Player::gainExperience(int exp) {
@@ -83,10 +89,10 @@ void Player::gainExperience(int exp) {
 }
 
 Character *Player::getTarget(vector<Enemy *> enemies) {
-    cout << "\n========= Elige un objetivo =========" << endl;
+    cout << "\n========= Elige un objetivo =========\n" << endl;
     int targetIndex = 0;
     for (int i = 0; i < enemies.size(); i++) {
-        cout << i << ". " << enemies[i]->getName() << endl;
+        cout << i << ". " << enemies[i]->getName() <<" (Hp " << enemies[i]->getHealth() <<")" << endl;
     }
     cout << "\n";
     cin >> targetIndex;
@@ -98,7 +104,7 @@ Action Player::takeAction(vector<Enemy *> enemies) {
     int option = 0;
     cout << "\n========= Elige una accion =========" << endl;
     cout << "1. Ataque" << endl;
-    cout << "2. Huir" << endl;
+    cout << "2. Huir        - "<<name<<" (Hp " << health <<")" << endl;
     cout << "3. Emote\n" << endl;
     cin >> option;
     system("cls");

@@ -63,9 +63,6 @@ void Combat::doCombat() {
         cout<<"==== Haz ganado en los putazos - Ganaste ===="<<endl;
         
     }
-    else {
-        cout << "=== Los enemigos te papearon - Game Over ===" << endl;
-    }
 
 }
 
@@ -118,9 +115,15 @@ void Combat::checkForFlee(Character *character) {
     bool fleed = character->hasFleed();
     if(fleed) {
         if(character->getIsPlayer()) {
-            cout<<"Has huido por poco exitosamente"<<endl;
-            teamMembers.erase(remove(teamMembers.begin(), teamMembers.end(), character), teamMembers.end());
-     
+            if (fleed) {
+                cout << "\n=== Has logrado huir de la batalla ===" << endl;
+                teamMembers.erase(remove(teamMembers.begin(), teamMembers.end(), character), teamMembers.end());
+                return;
+            }else{
+                cout << "\n=== Los enemigos te acorralaron, no has podido huir ===" << endl;
+                return;
+            }
+
         }
         else {
             cout<<character->getName()<<"Ha huido"<<endl;
