@@ -13,8 +13,7 @@ bool compareSpeed(Enemy *a, Enemy *b) {
     return a->getSpeed() > b->getSpeed();
 }
 
-Player::Player(char name[], int health, int attack, int defense, int speed) : Character(name, health, attack, defense,
-                                                                                        speed, true) {
+Player::Player(char name[], int health, int attack, int defense, int speed) : Character(name, health, attack, defense, speed, ExpReward, true) {
     experience = 0;
     level = 1;
 }
@@ -25,14 +24,14 @@ void Player::doAttack(Character *target) {
     target->takeDamage(trueDamage);
                         
     if (target->getHealth()<=0) {
-        gainExperience(120);
+        gainExperience(target->getExpReward());
     }
 }
 
 void Player::takeDamage(int damage) {
     setHealth(health - damage);
     if ((health > 0) && (fleed == false)) {
-        cout << "Haz recibido un plomazo de " << damage << " damage (Hp " << health << ")" << endl;
+        cout << "Haz recibido un plomazo (Hp -" << damage << ") | (Hp restante " << health << ")" << endl;
     }else{
         if (health <= 0) {
             cout << "=== Los enemigos te papearon - Game Over ===" << endl;
@@ -68,19 +67,29 @@ void Player::emote() {
 
 void Player::levelUp() {
     level++;
-    setHealth(getHealth() + 10);
+    
     cout << "\n--- Has subido de nivel ---" << endl;
     cout << "Tu nivel de personaje es: lvl " << level <<" - Exp ("<<experience<<"/100)" << endl;
-    cout << "\n + 10 de Vida: ("<<health <<")"<< endl;
+
+    cout << "\n + 10 de Vida: "<<health <<" -> ";
+    setHealth(getHealth() + 10);
+    cout << health << endl;
+
+    cout << " + 4 de Ataque: "<<attack <<" -> ";
     setAttack(getAttack() + 4);
-    cout << " + 4 de Ataque: ("<<attack <<")" << endl;
+    cout << attack << endl;
+
+    cout << " + 1 de Defensa: "<<defense <<" -> ";
     setDefense(getDefense() + 1);
-    cout << " + 1 de Defensa: ("<<defense <<")"<< endl;
+    cout << defense << endl;
+
+    cout << " + 5 de Velocidad: "<<speed <<" -> ";
     setSpeed(getSpeed() + 5);
-    cout << " + 5 de Velocidad: ("<<speed<<")"<< endl;
+    cout << speed << "\n" << endl;
 }
 
 void Player::gainExperience(int exp) {
+
     experience += exp;
     if (experience >= 100) {
         experience -= 100;

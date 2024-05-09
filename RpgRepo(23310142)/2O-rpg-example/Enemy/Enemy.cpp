@@ -10,11 +10,11 @@ using namespace std;
 
 //TODO: Check the circular dependency
 int getRolledAttack(int attack) {
-    int lowerLimit = attack * .70;
+    int lowerLimit = attack * .65;
     return (rand() % (attack - lowerLimit)) + lowerLimit;
 }
 
-Enemy::Enemy(char name[], int health, int attack, int defense, int speed) : Character(name, health, attack, defense, speed, false) {
+Enemy::Enemy(char name[], int health, int attack, int defense, int speed, int ExpReward) : Character(name, health, attack, defense, speed, ExpReward, false) {
 }
     //Determina un numero aleatorio de daño y defensa del enemigo
 void Enemy::doAttack(Character *target) {
@@ -29,10 +29,10 @@ void Enemy::takeDamage(int damage) {
     setHealth(getHealth() - damage);
     if(getHealth() <= 0) {
         cout << getName() << " ha recibido un manotazo de " << damage << " de damage" << " (Hp " << health << ")" << endl;
-        cout<<"\n-- " << getName() << " ha muerto (+120 Exp) -- " << endl;
+        cout<<"\n-- " << getName() << " ha muerto (+"<<ExpReward<<" Exp) -- " << endl;
     }
     else {
-        cout<<getName()<<" ha recibido un manotazo de " << damage << " de damage" << " (Hp "<<health<< ")" << endl;
+        cout<<getName()<<" ha recibido un manotazo ( Hp -" << damage << ") | (Hp restante "<<health<< ")" << endl;
     }
 }
 

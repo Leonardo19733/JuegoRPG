@@ -5,7 +5,7 @@
 #include <string>
 #include <sstream>
 
-Character::Character(char _name[], int _health, int _attack, int _defense, int _speed, bool _isPlayer) {
+Character::Character(char _name[], int _health, int _attack, int _defense, int _speed, int _ExpReward, bool _isPlayer) {
     strcpy(name, _name);
     health = _health;
     attack = _attack;
@@ -13,6 +13,7 @@ Character::Character(char _name[], int _health, int _attack, int _defense, int _
     speed = _speed;
     isPlayer = _isPlayer;
     fleed = false;
+    ExpReward = _ExpReward;
 }
 
 void Character::setName(char _name[]) {
@@ -68,4 +69,12 @@ bool Character::getIsPlayer() {
 
 bool Character::hasFleed() {
     return fleed;
+}
+
+int Character::getExpReward() {
+    return ExpReward;
+}
+
+void Character::setExpReward(int _ExpReward) {
+    ExpReward = _ExpReward;
 }
