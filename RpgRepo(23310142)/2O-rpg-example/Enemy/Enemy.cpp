@@ -4,6 +4,7 @@
 #include "Enemy.h"
 #include <iostream>
 #include <string>
+#include <utility>
 
 
 using namespace std;
@@ -63,3 +64,13 @@ Action Enemy::takeAction(vector<Player *> player) {
     return myAction;
 }
 
+int Enemy::getExpReward() {
+    return ExpReward;
+}
+
+void Enemy::uploadStatistics() {
+    setAttack(getAttack() + 6);
+    setDefense(getDefense() + 2);
+    setSpeed(getSpeed() + 2);
+    cout <<"-- " << getName() << " ha subido sus estadisticas (+10 puntos de habilidad) --" << endl;
+}

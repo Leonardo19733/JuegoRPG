@@ -16,6 +16,7 @@ bool compareSpeed(Enemy *a, Enemy *b) {
 Player::Player(char name[], int health, int attack, int defense, int speed) : Character(name, health, attack, defense, speed, ExpReward, true) {
     experience = 0;
     level = 1;
+    leveledUp = false;
 }
 //Obtenemos el daño verdadero restando la defensa
 void Player::doAttack(Character *target) {
@@ -86,6 +87,7 @@ void Player::levelUp() {
     cout << " + 5 de Velocidad: "<<speed <<" -> ";
     setSpeed(getSpeed() + 5);
     cout << speed << "\n" << endl;
+    this->leveledUp = true;
 }
 
 void Player::gainExperience(int exp) {
@@ -156,4 +158,16 @@ Action Player::takeAction(vector<Enemy *> enemies) {
     }
 
     return myAction;
+}
+
+int Player::getLevel() {
+    return level;
+}
+
+bool Player::isLeveledUp() {
+    return leveledUp;
+}
+
+void Player::setLeveledUp(bool _leveledUp) {
+    this->leveledUp = _leveledUp;
 }
